@@ -1,16 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const bcrypt = require('bcrypt')
-const User = require('../models/User.js')
+const controller = require('../controllers/authController')
 
-// router.post('/register', async ( req, res) => {
-//     try {
-//         const {
 
-//         }
-//     } catch (error) {
-        
-//     }
-// })
 
-// دخلي الفنكشنز فالكونترولر وبس حطي الفيريبل مني 
+router.post('/signup', controller.signingUp)
+
+router.post('/login', controller.loginUser)
+
+
+module.exports = router

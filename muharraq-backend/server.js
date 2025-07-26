@@ -7,6 +7,7 @@ const dotenv = require('dotenv')
 const connect = require('./config/db')
 const cors = require('cors')
 require('dotenv').config()
+const authRoutes = require('./routes/authRoutes')
 
 
 const app = express()
@@ -16,6 +17,7 @@ app.use(express.json())
 app.use(methodOverride('_method'))
 app.use(morgan('dev'))
 app.use(cors())
+app.use('/api/auth', authRoutes)
 
 app.use(session({
     secret: 'anything', //process.env.SESSION_SECRET,
