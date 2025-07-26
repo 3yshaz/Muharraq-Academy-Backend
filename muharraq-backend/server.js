@@ -7,8 +7,12 @@ const dotenv = require('dotenv')
 const connect = require('./config/db')
 const cors = require('cors')
 require('dotenv').config()
-const authRoutes = require('./routes/authRoutes')
 
+
+const authRoutes = require('./routes/authRoutes')
+const horseRoutes = require('./router/horseRoutes')
+const packageRoutes = require('./router/packageRoutes')
+const attendanceRoutes = require('./router/attendanceRoutes')
 
 const app = express()
 
@@ -17,7 +21,11 @@ app.use(express.json())
 app.use(methodOverride('_method'))
 app.use(morgan('dev'))
 app.use(cors())
+
 app.use('/api/auth', authRoutes)
+app.use('/api/horse', horseRoutes)
+app.use('/api/package', packageRoutes)
+app.use('/api/attendance', attendanceRoutes)
 
 app.use(session({
     secret: 'anything', //process.env.SESSION_SECRET,
