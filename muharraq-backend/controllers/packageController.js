@@ -30,6 +30,15 @@ const getPackageById = async (req,res) => {
     }
 }
 
+const updatePackage = async ( req, res) => {
+    try {
+        const update = await package.findByIdAndUpdate(req.params.id, req.body, { new: true})
+        res.json(updated)
+    } catch (error) {
+        res.status(500).json({ error: error.message})
+    }
+}
+
 
 const deletePackage = async ( req, res) => {
     try {
@@ -45,5 +54,6 @@ module.exports = {
     createPackage,
     getAllPackages,
     getPackageById,
+    updatePackage,
     deletePackage
 }

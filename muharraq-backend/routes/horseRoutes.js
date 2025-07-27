@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const horseController = requrie('../controllers/horseController')
+const horseController = require('../controllers/horseController')
 const middleware = require('../middleware/index')
 
 

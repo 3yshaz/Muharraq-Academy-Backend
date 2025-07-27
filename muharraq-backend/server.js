@@ -10,9 +10,9 @@ require('dotenv').config()
 
 
 const authRoutes = require('./routes/authRoutes')
-const horseRoutes = require('./router/horseRoutes')
-const packageRoutes = require('./router/packageRoutes')
-const attendanceRoutes = require('./router/attendanceRoutes')
+const horseRoutes = require('./routes/horseRoutes')
+const packageRoutes = require('./routes/PackageRoutes')
+const attendanceRoutes = require('./routes/attendanceRoutes')
 
 const app = express()
 

@@ -4,7 +4,7 @@ const horseSchema= new mongoose.Schema({
     name: {type: String, required: true},
     breed: String,
     age: Number,
-    isAvailable: {Type: Boolean, default: true},
+    isAvailable: {type: Boolean, default: true,},
 }, {timestamps: true}
 )
 

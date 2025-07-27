@@ -1,6 +1,6 @@
-const express = requrie('express')
-const router = express.router()
-const controller = require('../controllers/packageControllers')
+const express = require('express')
+const router = express.Router()
+const controller = require('../controllers/packageController')
 
 router.post('/', controller.createPackage) 
 

@@ -53,6 +53,16 @@ const loginUser = async ( req,res) => {
     }
 }
 
+
+const getAllUsers = async ( req, res) => {
+    try {
+        const users = await User.find()
+        res.json(users)
+    } catch (error) {
+        res.status(500).json({ error: error.message})
+    }
+}
+
 const getUserById = async (req,res) => {
     try {
         const user = await User.findById(req.params.id)
@@ -86,6 +96,7 @@ const deleteUser = async (req, res) => {
 module.exports = { 
     signingUp,
     loginUser,
+    getAllUsers,
     getUserById,
     updateUser,
     deleteUser
