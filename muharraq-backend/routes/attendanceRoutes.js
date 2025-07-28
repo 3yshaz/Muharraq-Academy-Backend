@@ -1,16 +1,18 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/attendanceController')
+const middleware = require('../middleware/index')
 
-router.post('/', controller.markAttendance)
 
-router.get('/', controller.getAllAttendance)
-router.get('/rider/:riderId', controller.getAttendanceByRider)
-router.get('/:id', controller.getAttendanceById)
+router.post('/', middleware.requireAuth, middleware.requireAdmin, controller.markAttendance)
 
-router.put('/:id', controller.updateAttendance)
+router.get('/', middleware.requireAuth, middleware.requireAdmin, controller.getAllAttendance)
+router.get('/rider/:riderId', middleware.requireAuth, middleware.requireRider, controller.getAttendanceByRider)
+router.get('/:id', middleware.requireAuth, middleware.requireAdmin, controller.getAttendanceById)
 
-router.delete('/:id', controller.deleteAttendance)
+router.put('/:id', middleware.requireAuth, middleware.requireAdmin, controller.updateAttendance)
+
+router.delete('/:id', middleware.requireAuth, middleware.requireAdmin, controller.deleteAttendance)
 
 
 module.exports = router

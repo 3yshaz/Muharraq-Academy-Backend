@@ -4,13 +4,13 @@ const horseController = require('../controllers/horseController')
 const middleware = require('../middleware/index')
 
 
-router.post('/', horseController.registerHorse)
+router.post('/', middleware.requireAuth, middleware.requireAdmin, horseController.registerHorse)
 
-router.get('/', horseController.getAllHorses)
-router.get('/:id', horseController.getHorseById)
+router.get('/', middleware.requireAuth, horseController.getAllHorses)
+router.get('/:id', middleware.requireAuth, horseController.getHorseById)
 
-router.put('/:id', horseController.updateHorse)
+router.put('/:id', middleware.requireAuth, middleware.requireAdmin, horseController.updateHorse)
 
-router.delete('/:id', horseController.deleteHorse)
+router.delete('/:id', middleware.requireAuth, middleware.requireAdmin, horseController.deleteHorse)
 
 module.exports = router
