@@ -1,13 +1,39 @@
 const Attendance = require('../models/Attendance')
 
 const markAttendance = async ( req, res) => {
+
     try {
-        const attendance = new Attendance(req.body)
-        await attendance.save()
-        res.status(201).json(attendance)
+        const riderId = req.user.userId
+
+        if (!riderId) {
+            return res.status(401).send('Unauthorized: Rider ID missing from token')
+        }
+
+        const rider = await user.findById(riderId)
+
+        if (!rider || !rider.selectedPackage) {
+            return res.status(400).send('no package booked')
+        }
+
+        const { selectedPackage } = rider
+
+
+        if (selectedPackage.daysLeft <= 0 || selectedPackage.sessionLeft <=0) {
+            return res.status(400).send('no sessions or days left in the package') 
+        }
+
+        selectedPackage.daysLeft -= 1
+        selectedPackage.sessionLeft -= 1
+
+        await rider.save()
+
+        res.send("Attendance marked and package updated") 
+
     } catch (error) {
-        res.status(500).json({ error: error.message})
+        console.error('Error marking attendance:', error)
+        res.status(500).send('Internal Server Error') 
     }
+
 }
 
 

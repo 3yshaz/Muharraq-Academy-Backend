@@ -1,12 +1,16 @@
 const mongoose = require('mongoose')
 
 const packageSchema =new mongoose.Schema({
-    name: {type: String, required: true}, 
+    name: {type: String },
     description: {type: String},
     price: {type: Number, required: true},
     session: {type: Number, required: true},
-    durationInDays: {type: Number, required: true},
-    isActive: {type: Boolean, default: true}
+    sessionsPerMonth: {type: Number, required: true},
+    duration: {type: String, required: true},
+    discipline: {type:String},
+    imageUrl: {type: String}
 }, {timestamps:true})
 
-module.exports = mongoose.model('Package', packageSchema)
+module.exports = mongoose.model('package', packageSchema)
+
+ 

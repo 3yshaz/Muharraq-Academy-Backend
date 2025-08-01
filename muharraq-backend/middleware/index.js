@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
 
 
-const requireAuth = (req, resizeBy, next) => {
+const requireAuth = (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1]
     
     if (!token) {
-        return resizeBy.status(401).json({ message: "Access Denied. No token provided"})
+        return res.status(403).json({ message: "Access Denied. No token provided"})
     }
 
     try {

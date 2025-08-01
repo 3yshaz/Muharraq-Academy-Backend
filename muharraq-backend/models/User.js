@@ -9,9 +9,13 @@ const userSchema = new mongoose.Schema(
         contactNumber: {type: String},
         weight: {type: Number},
         age: {type: Number},
-        package: {type: mongoose.Schema.Types.ObjectId, ref: 'Package'},
-        joinedDate: {type: Date, default: Date.now}
-    },
+        selectedPackage: {
+            packageId: {type: mongoose.Schema.Types.ObjectId, ref: 'Package'},
+            sessionLeft: {type: Number}, 
+            daysLeft: {type: Number},
+            bookedAt: {type: Date} 
+        }
+    } , 
     { timestamps: true }
 )
 module.exports = mongoose.model('User', userSchema)

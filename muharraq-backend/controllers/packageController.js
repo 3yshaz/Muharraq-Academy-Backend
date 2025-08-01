@@ -1,4 +1,6 @@
 const package = require('../models/Package')
+const booking = require('../models/Booking')
+
 
 const createPackage = async (req, res) => {
     try {
@@ -13,10 +15,10 @@ const createPackage = async (req, res) => {
 
 const getAllPackages = async (req, res) => {
     try {
-        const packs = await package.find()
-        res.json(packs)
+        const packages = await package.find()
+        res.json(packages)
     } catch (error) {
-        res.status(500).json({ error: error.message})
+        res.status(500).json({ message: 'server error'})
     }
 }
 
@@ -24,7 +26,7 @@ const getAllPackages = async (req, res) => {
 const getPackageById = async (req,res) => {
     try {
         const update = await package.findByIdAndUpdate(req.params.id, req.body, { new: true})
-        res.json(updated)
+        res.json(update)
     } catch (error) {
         res.status(500).json({ error: error.message})
     }
@@ -33,7 +35,7 @@ const getPackageById = async (req,res) => {
 const updatePackage = async ( req, res) => {
     try {
         const update = await package.findByIdAndUpdate(req.params.id, req.body, { new: true})
-        res.json(updated)
+        res.json(update)
     } catch (error) {
         res.status(500).json({ error: error.message})
     }
@@ -49,11 +51,57 @@ const deletePackage = async ( req, res) => {
     }
 }
 
+const bookPackage = async (req, res ) => {
+    const {riderId, packageId} = req.body
+
+    try {
+        const pkg = await package.findById(packageId)
+        if(!pkg) 
+            return res.status(404).send('Package not found')
+
+        await user.findByIdAndUpdate(riderId, {
+            selectedPackage: {
+                packageId: pkg._id,
+                sessionLeft: pkg.sessionsPerMonth,
+                daysLeft: pkg.sessionsPerMonth,
+                bookedAt: new Date()
+            }
+        })
+
+        res.send('Package booked successfully')
+    } catch (error) {
+        res.status(500).send('error booking package')
+    }
+
+}
+
+const getBookedPacks = async (req, res) => {
+    try {
+        const userId = req.user.userId
+
+        const bookings = await booking.find({ user: userId }).populate('package')
+
+        const bookedPackages = bookings.map(booking => booking.package)
+
+        res.status(200).json(bookedPackages)
+    } catch (error) {
+        console.error('Error fetching rider bookings:', error)
+        res.status(500).json({ message: 'Something went wrong'})
+    }
+
+
+}
+
+
+
+
 
 module.exports = {
     createPackage,
     getAllPackages,
     getPackageById,
     updatePackage,
-    deletePackage
+    deletePackage,
+    bookPackage,
+    getBookedPacks
 }

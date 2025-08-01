@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 
-const creatToken = (_id, role) => {
-    return jwt.sign({_id, role}, process.env.JWT_SECRET, { expiresIn: '3'})
-}
+// const creatToken = (_id, role) => {
+//     return jwt.sign({_id, role}, process.env.JWT_SECRET, { expiresIn: '3'})
+// }
 
 const signingUp = async (req, res) => {
     try {
@@ -39,7 +39,11 @@ const signingUp = async (req, res) => {
 
 const loginUser = async ( req,res) => {
     try {
+        console.log('Request Body:', req.body)
         const { email, password } = req.body
+        if (!email || !password) {
+            return response.status(400).jason({ error: 'Email and pass are required'})
+          }
         const user = await User.findOne({email})
         if (!user)
             return res.status(400).json({ error: 'Invalid Email :)'})
@@ -51,7 +55,7 @@ const loginUser = async ( req,res) => {
             expiresIn: "1d"
         })
 
-        res.status(200).json({ message: "Login Successfully", token})
+        res.status(200).json({ message: "Login Successfully", token, role: user.role})
 
 
     } catch (error) {
@@ -99,6 +103,7 @@ const deleteUser = async (req, res) => {
         res.status(500).json({error: error.message})
     }
 }
+
 
 module.exports = { 
     signingUp,

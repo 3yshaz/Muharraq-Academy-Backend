@@ -24,7 +24,7 @@ app.use(cors())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/horse', horseRoutes)
-app.use('/api/package', packageRoutes)
+app.use('/api/packages', packageRoutes)
 app.use('/api/attendance', attendanceRoutes)
 
 app.use(session({
