@@ -28,7 +28,7 @@ app.use('/api/packages', packageRoutes)
 app.use('/api/attendance', attendanceRoutes)
 
 app.use(session({
-    secret: 'anything', //process.env.SESSION_SECRET,
+    secret: 'anything', //process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: false,
 }))

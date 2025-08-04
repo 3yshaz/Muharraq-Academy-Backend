@@ -11,6 +11,6 @@ const packageSchema =new mongoose.Schema({
     imageUrl: {type: String}
 }, {timestamps:true})
 
-module.exports = mongoose.model('package', packageSchema)
+module.exports = mongoose.model('Package', packageSchema)
 
  

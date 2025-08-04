@@ -42,20 +42,32 @@ const loginUser = async ( req,res) => {
         console.log('Request Body:', req.body)
         const { email, password } = req.body
         if (!email || !password) {
-            return response.status(400).jason({ error: 'Email and pass are required'})
+            return res.status(400).json({ error: 'Email and pass are required'})
           }
         const user = await User.findOne({email})
         if (!user)
             return res.status(400).json({ error: 'Invalid Email :)'})
         const match = await bcrypt.compare(password, user.password)
-        if(!match) 
-            return res.status(400).json({error: 'Invalid Password :)'})
-
+        if(!match) {
+            return res.status(400).json({error: 'Invalid Password :)'}) }
+            console.log('JWT_SECRET:', process.env.JWT_SECRET);
+            if (!process.env.JWT_SECRET) {
+                return res.status(500).json({ error: 'Missing JWT_SECRET in environment' });
+            }
         const token = jwt.sign({ userId: user._id, role: user.role}, process.env.JWT_SECRET, {
             expiresIn: "1d"
         })
 
-        res.status(200).json({ message: "Login Successfully", token, role: user.role})
+        res.status(200).json({ message: "Login Successfully",
+            token,
+            role: user.role,
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+
+        }})
 
 
     } catch (error) {
@@ -103,7 +115,27 @@ const deleteUser = async (req, res) => {
         res.status(500).json({error: error.message})
     }
 }
+const getMyProfile = async (req, res) => {
 
+    try {
+        const userId = req.user?.userId
+        if (!userId) return res.status(400).json({message: "INvalid token"})
+
+
+        const user = await User.findById(userId).populate('selectedPackage.packageId')
+
+        if (!user) {
+            return res.status(404).json({message: 'user not found'})
+        }
+
+
+
+        res.status(200).json(user)
+    } catch (error) {
+        console.error('Error fetching profile:', error)
+        res.status(500).json({message: 'Server error'})
+    }
+}
 
 module.exports = { 
     signingUp,
@@ -111,5 +143,6 @@ module.exports = {
     getAllUsers,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    getMyProfile
 }

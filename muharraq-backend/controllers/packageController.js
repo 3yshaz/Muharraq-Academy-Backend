@@ -1,5 +1,6 @@
 const package = require('../models/Package')
 const booking = require('../models/Booking')
+const user = require('../models/User')
 
 
 const createPackage = async (req, res) => {
@@ -52,7 +53,8 @@ const deletePackage = async ( req, res) => {
 }
 
 const bookPackage = async (req, res ) => {
-    const {riderId, packageId} = req.body
+    const riderId = req.user.userId
+    const { packageId } = req.body
 
     try {
         const pkg = await package.findById(packageId)
@@ -67,9 +69,15 @@ const bookPackage = async (req, res ) => {
                 bookedAt: new Date()
             }
         })
+        await booking.create({
+            user: riderId,
+            package: pkg._id,
+            bookedAt: new Date()
+        })
 
         res.send('Package booked successfully')
     } catch (error) {
+        console.error('Error in booking', error)
         res.status(500).send('error booking package')
     }
 
