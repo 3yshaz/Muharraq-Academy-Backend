@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema(
             sessionLeft: {type: Number}, 
             daysLeft: {type: Number},
             bookedAt: {type: Date} 
-        }
+        },
+        profileImage: {type: String, default: 'defaultUser.jpg'}
     } , 
     { timestamps: true }
 )

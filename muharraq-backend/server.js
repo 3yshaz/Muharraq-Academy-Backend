@@ -26,6 +26,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/horse', horseRoutes)
 app.use('/api/packages', packageRoutes)
 app.use('/api/attendance', attendanceRoutes)
+app.use('/images', express.static('public/images'))
 
 app.use(session({
     secret: 'anything', //process.env.JWT_SECRET,

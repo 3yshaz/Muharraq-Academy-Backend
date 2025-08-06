@@ -9,7 +9,7 @@ const markAttendance = async ( req, res) => {
             return res.status(401).send('Unauthorized: Rider ID missing from token')
         }
 
-        const rider = await user.findById(riderId)
+        const rider = await User.findById(riderId)
 
         if (!rider || !rider.selectedPackage) {
             return res.status(400).send('no package booked')
@@ -26,6 +26,12 @@ const markAttendance = async ( req, res) => {
         selectedPackage.sessionLeft -= 1
 
         await rider.save()
+
+        await Attendance.create({
+            rider: riderId,
+            horse: req.body.horseId,
+            createdAt: new Date()
+        })
 
         res.send("Attendance marked and package updated") 
 

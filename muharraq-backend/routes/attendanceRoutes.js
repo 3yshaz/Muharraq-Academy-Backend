@@ -14,5 +14,8 @@ router.put('/:id', middleware.requireAuth, middleware.requireAdmin, controller.u
 
 router.delete('/:id', middleware.requireAuth, middleware.requireAdmin, controller.deleteAttendance)
 
+            // await fetchProfile() 
+            // alert('Profile image update successfully!')
+            // setNewImage(null)
 
 module.exports = router

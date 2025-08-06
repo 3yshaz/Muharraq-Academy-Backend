@@ -4,10 +4,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 
-// const creatToken = (_id, role) => {
-//     return jwt.sign({_id, role}, process.env.JWT_SECRET, { expiresIn: '3'})
-// }
-
 const signingUp = async (req, res) => {
     try {
         const { name, email, password, role, age, weight, contactNumber, packageId} = req.body
@@ -76,8 +72,19 @@ const loginUser = async ( req,res) => {
     }
 }
 
+const getAllRiders = async ( req, res) => {
+
+    try {
+        const riders = await User.find({ role: 'rider'})
+        res.status(200).json(riders)
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch riders', error})
+    }
+}
+
 
 const getAllUsers = async ( req, res) => {
+
     try {
         const users = await User.find()
         res.json(users)
@@ -137,12 +144,37 @@ const getMyProfile = async (req, res) => {
     }
 }
 
+const updateProfileImage = async ( req, res) => {
+    console.log('Uploaded file: ', req.file)
+    try {
+        const userId = req.user.userId
+        const imagePath = req.file ? req.file.filename : null
+
+
+        if ( !imagePath) {
+            return res.status(400).json({ message: 'No image uploaded'})
+        }
+
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { profileImage: imagePath},
+            {new: true}
+        )
+        res.json(updatedUser)
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error})
+    }
+}
+
 module.exports = { 
     signingUp,
     loginUser,
+    getAllRiders,
     getAllUsers,
     getUserById,
     updateUser,
     deleteUser,
-    getMyProfile
+    getMyProfile,
+    updateProfileImage
 }
