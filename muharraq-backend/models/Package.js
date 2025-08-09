@@ -6,6 +6,7 @@ const packageSchema =new mongoose.Schema({
     price: {type: Number, required: true},
     session: {type: Number, required: true},
     sessionsPerMonth: {type: Number, required: true},
+    status:{ type: String, enum: ['pending', 'active', 'rejected','expired'], default: 'pending'},
     duration: {type: String, required: true},
     discipline: {type:String},
     imageUrl: {type: String}

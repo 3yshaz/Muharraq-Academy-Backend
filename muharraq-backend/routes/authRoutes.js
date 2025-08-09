@@ -13,7 +13,7 @@ router.get('/', middleware.requireAuth, middleware.requireAdmin, controller.getA
 router.get('/:id', middleware.requireAuth, controller.getUserById)
 
 
-router.put('/profile/image', upload.single('profileImage'), middleware.requireAuth, middleware.requireRider, controller.updateProfileImage)
+router.put('/profile/image', middleware.requireAuth, middleware.requireRider, upload.single('profileImage'), controller.updateProfileImage)
 router.put('/:id', middleware.requireAuth, controller.updateUser)
 
 router.delete('/:id', middleware.requireAuth, middleware.requireAdmin, controller.deleteUser)

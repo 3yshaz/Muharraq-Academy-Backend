@@ -6,15 +6,13 @@ const middleware = require('../middleware/index')
 
 
 router.post('/', middleware.requireAuth, middleware.requireAdmin, controller.createPackage) 
-router.post('/:id/book', middleware.requireAuth, middleware.requireRider, controller.bookPackage)
 
-router.get('/my/booking', middleware.requireAuth, middleware.requireRider, controller.getBookedPacks)
-router.get('/:id', controller.getPackageById)
 router.get('/', controller.getAllPackages)
+router.get('/:id', controller.getPackageById)
 
 router.put('/:id', middleware.requireAuth, middleware.requireAdmin, controller.updatePackage)
 
 router.delete('/:id', middleware.requireAuth, middleware.requireAdmin, controller.deletePackage)
-
+router.delete('/:packageId', middleware.requireAuth, middleware.requireRider, controller.deletePackageByRider)
 
 module.exports = router

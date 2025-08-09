@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const attendanceSchema = new mongoose.Schema({
     rider: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    horse: {type: mongoose.Schema.Types.ObjectId, ref: 'Horse', required: false},
     createdAt: {type: Date, default: Date.now, required: true},
     status: {type: String, enum: ['present', 'absent'], required: true},
     packageId: {type: mongoose.Schema.Types.ObjectId, ref: 'Package'},

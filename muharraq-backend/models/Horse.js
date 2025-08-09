@@ -5,6 +5,8 @@ const horseSchema= new mongoose.Schema({
     breed: String,
     age: Number,
     isAvailable: {type: Boolean, default: true,},
+    image: {type: String, default: 'default-horse.jpg'}
+
 }, {timestamps: true}
 )
 

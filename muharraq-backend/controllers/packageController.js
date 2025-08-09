@@ -1,5 +1,5 @@
 const package = require('../models/Package')
-const booking = require('../models/Booking')
+const Booking = require('../models/Booking')
 const user = require('../models/User')
 
 
@@ -52,55 +52,27 @@ const deletePackage = async ( req, res) => {
     }
 }
 
-const bookPackage = async (req, res ) => {
-    const riderId = req.user.userId
-    const { packageId } = req.body
 
+const deletePackageByRider = async (req, res) => { 
+    
     try {
-        const pkg = await package.findById(packageId)
-        if(!pkg) 
-            return res.status(404).send('Package not found')
+        const packageId = req.params.packageId
+        const riderId = req.user.userId
 
-        await user.findByIdAndUpdate(riderId, {
-            selectedPackage: {
-                packageId: pkg._id,
-                sessionLeft: pkg.sessionsPerMonth,
-                daysLeft: pkg.sessionsPerMonth,
-                bookedAt: new Date()
-            }
-        })
-        await booking.create({
-            user: riderId,
-            package: pkg._id,
-            bookedAt: new Date()
-        })
+        const foundPackage = await package.findOne({ _id: packageId, rider: riderId})
 
-        res.send('Package booked successfully')
-    } catch (error) {
-        console.error('Error in booking', error)
-        res.status(500).send('error booking package')
+        if (!foundPackage) 
+            return res.status(404).json({message: 'Package not found or not owned by rider'})
+
+        await package.deleteOne({ _id: packageId})
+        res.json({ message: 'Package deleted successfully'})
+    } catch (eror) {
+        console.error('Error deleting package', error)
+        res.status(500).json({error: error.message})
+
     }
 
 }
-
-const getBookedPacks = async (req, res) => {
-    try {
-        const userId = req.user.userId
-
-        const bookings = await booking.find({ user: userId }).populate('package')
-
-        const bookedPackages = bookings.map(booking => booking.package)
-
-        res.status(200).json(bookedPackages)
-    } catch (error) {
-        console.error('Error fetching rider bookings:', error)
-        res.status(500).json({ message: 'Something went wrong'})
-    }
-
-
-}
-
-
 
 
 
@@ -110,6 +82,5 @@ module.exports = {
     getPackageById,
     updatePackage,
     deletePackage,
-    bookPackage,
-    getBookedPacks
+    deletePackageByRider,
 }

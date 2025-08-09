@@ -13,6 +13,7 @@ const authRoutes = require('./routes/authRoutes')
 const horseRoutes = require('./routes/horseRoutes')
 const packageRoutes = require('./routes/PackageRoutes')
 const attendanceRoutes = require('./routes/attendanceRoutes')
+const bookingRoutes = require('./routes/bookingRoutes')
 
 const app = express()
 
@@ -23,8 +24,10 @@ app.use(morgan('dev'))
 app.use(cors())
 
 app.use('/api/auth', authRoutes)
+app.use('/api/users', authRoutes)
 app.use('/api/horse', horseRoutes)
 app.use('/api/packages', packageRoutes)
+app.use('/api/booking', bookingRoutes)
 app.use('/api/attendance', attendanceRoutes)
 app.use('/images', express.static('public/images'))
 
