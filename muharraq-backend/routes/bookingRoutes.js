@@ -10,6 +10,6 @@ router.get('/my/booking', middleware.requireAuth, middleware.requireRider, contr
 
 router.get('/pending', middleware.requireAuth, middleware.requireAdmin, controller.getPendingBookings)
 
-router.put('/confirm/:bookindId', middleware.requireAuth, middleware.requireAdmin, controller.confirmBooking)
+router.put('/confirm/:bookingId', middleware.requireAuth, middleware.requireAdmin, controller.confirmBooking)
 
 module.exports = router

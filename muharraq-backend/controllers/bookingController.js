@@ -52,9 +52,7 @@ const getBookedPacks = async (req, res) => {
 
         const bookings = await Booking.find({ user: userId }).populate('package')
 
-        const bookedPackages = bookings.map(booking => booking.package)
-
-        res.status(200).json(bookedPackages)
+        res.status(200).json(bookings)
     } catch (error) {
         console.error('Error fetching rider bookings:', error)
         res.status(500).json({ message: 'Something went wrong'})
